@@ -37,3 +37,5 @@ mocap_utils/frame_to_gif.py
 .venv
 venv
 venv_fm
+mocap_utils/select_epick_kitchen.py
+

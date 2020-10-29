@@ -10,7 +10,6 @@ from torchvision.transforms import transforms
 from handmocap.hand_modules.test_options import TestOptions
 from handmocap.hand_modules.h3dw_model import H3DWModel
 from mocap_utils.coordconv import convert_smpl_to_bbox, convert_bbox_to_oriIm
-import mocap_utils.geometry_utils as gu
 
 
 class HandMocap:
@@ -104,7 +103,7 @@ class HandMocap:
         assert hand_type in ['left_hand', 'right_hand']
         img_cropped, bbox_scale_ratio, bbox_processed = \
             self.__pad_and_resize(raw_image, hand_bbox, add_margin)
-
+        
         #horizontal Flip to make it as right hand
         if hand_type=='left_hand':
             img_cropped = np.ascontiguousarray(img_cropped[:, ::-1,:], img_cropped.dtype) 
@@ -187,7 +186,7 @@ class HandMocap:
                         pred_output[hand_type]['faces'] = faces
 
                         pred_output[hand_type]['bbox_scale_ratio'] = bbox_scale_ratio
-                        pred_output[hand_type]['bbox_top_left'] = bbox_processed[:2]
+                        pred_output[hand_type]['bbox_top_left'] = np.array(bbox_processed[:2])
                         pred_output[hand_type]['pred_camera'] = cam
                         pred_output[hand_type]['img_cropped'] = img_cropped
 
@@ -215,4 +214,4 @@ class HandMocap:
             hand_bbox_list_processed.append(hand_bboxes_processed)
         
         assert len(hand_bbox_list_processed) == len(hand_bbox_list)
-        return hand_bbox_list_processed, pred_output_list
+        return pred_output_list
